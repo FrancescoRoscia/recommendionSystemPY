@@ -48,7 +48,7 @@ def home():
                     db.session.execute(new_song_for_user)
                     db.session.commit()
 
-                    
+                #check if the artist/artists are already associated with the song
 
                 return render_template('home.html.j2', user=current_user, tracks=tracks, name_track = name_track, name_artist = name_artist)
         else: # ricerca artista
