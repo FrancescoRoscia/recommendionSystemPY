@@ -1,0 +1,42 @@
+{% extends "base.html.j2" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<!--<form method="POST">
+    <h3 align="center">Login</h3>
+    <div class="form-group">
+        <label for="email">Email: </label>
+        <input type="email" class="form-control" name="email" id="email" placeholder="Enter email" required>
+    </div>
+    <div class="form-group">
+        <label for="password">Password: </label>
+        <input type="password" class="form-control" name="password" id="password" placeholder="Enter password" required>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary" align="center">Login</button>
+</form>-->
+<link rel="stylesheet" href="../static/index.css">
+
+<section>
+        <div class="form-box">
+            <div class="form-value">
+                <form method="POST">
+                <br>
+                    <h2>Login</h2>
+                    <div class="inputbox">
+                        <ion-icon name="mail-outline"></ion-icon>
+                        <input type="email" name="email" id="email" required autocomplete="off">              
+                        <label for="">Email</label>          
+                    </div>
+                    <div class="inputbox">
+                        <ion-icon name="lock-closed-outline"></ion-icon>                        
+                        <input type="password" name="password" id="password" required autocomplete="off">      
+                        <label for="">Password</label>                  
+                    </div>
+                    <button type="submit" class="button-template">Log in</button><br><br>
+                </form>
+            </div>
+        </div>
+    </section>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+{% endblock %}

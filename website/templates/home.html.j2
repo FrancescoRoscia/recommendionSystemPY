@@ -1,0 +1,192 @@
+{% extends "base.html.j2" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<head>
+
+    <link rel="stylesheet" href="../static/home.css">
+  
+    <style>
+        .prova{
+            border: 2px solid rgba(255,255,255,0.5);
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            display: flex;
+            flex-wrap: wrap;
+            padding-left: 20px;
+            padding-right: 10px;
+            width: 350px;
+        }
+
+        ul {list-style: none}
+
+        li::before {
+        content: "•"; 
+        color: white;
+        display: inline-block;
+        width: 1em;
+        margin-left: -1em}
+
+        @media screen and (max-width: 1024px) {
+        .column_mine {
+            width: 100%;
+        }
+}
+
+
+    </style>
+</head>
+
+<!--<h1 align="center">Notes</h1>
+<ul class="list-group list-group-flush" id="noter">
+    {% for note in user.notes %}
+    <li class="list-group-item">{{ note.data }}
+        <button type="button" class="close" onclick="deleteNote({{ note.id }})">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </li>
+    {% endfor %}
+</ul>
+
+<form method="post">
+    <textarea name="note" id="note" class="form-control"></textarea>
+    <br>
+    <div align="center">
+        <button type="submit" class="btn btn-primary">Add note</button>
+    </div>
+</form>-->
+
+<!--<div>
+    <form method="POST">
+        <h3 id="artista-canzone-preferito">Enter a song you like:</h3><br>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" onclick="cambiaTesto()" checked>
+            <label class="form-check-label" for="inlineRadio1">Song</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" onclick="cambiaTesto()">
+            <label class="form-check-label" for="inlineRadio2">Artist</label>
+        </div>
+        <br><br>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+-->
+{% if name_track %}
+<h4 class="previous-song">
+{{ name_track }} - {{ name_artist }}
+</h4>
+{% endif %}
+
+<div class="row_mine">
+
+<div class="column_mine right_mine">
+<br><br><br><br><br><br><br><br><br><br>
+{% if artists %}
+<div class="prova" style="position:relative; right:75px">
+    
+    <center><br><h4>Artists that you may like:</h4></center>
+    <ul>
+        {% for artist in artists%}
+        <li><span>{{ artist['name'] }}</span></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+</div>
+
+
+<div class="column_mine middle_mine">
+<section>
+    <div class="form-box">
+
+        <form method="POST">
+            <br>
+            <h3 id="artista-canzone-preferito">Enter a song you like:</h3><br>
+            <div align="center">
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+                        value="option1" onclick="cambiaTesto()" checked>
+                    <label class="form-check-label" for="inlineRadio1">Song</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+                        value="option2" onclick="cambiaTesto()">
+                    <label class="form-check-label" for="inlineRadio2">Artist</label>
+                </div>
+                <br><br>
+            </div>
+
+            <div class="form-value">
+                <div class="inputbox">
+                    <ion-icon id="icon-input-type" name="musical-notes-outline"></ion-icon>
+                    <input type="text" name="song" id="song" required autocomplete="off">
+                    <label id="label-input-type" for="">Song</label>
+
+                    
+                </div>
+                <button type="submit" style="width:21vw" class="button-template">Submit</button>
+                <br><br>
+        </form>
+    </div>
+    </div>
+</section>
+</div>
+
+
+<div class="column_mine left_mine">
+<br><br><br><br><br><br>
+{% if artist_input %}
+<div class="prova" style="width: 400px; justify-content: center;">
+    <center><br><h4>Top songs of {{ artist_input.capitalize() }}:</h4></center>
+    <ul>
+        {% for track in tracks_art%}
+        <li style="margin-bottom: 5px;"><span>{{ track['name'] }} - {{ track['artists'][0]['name'] }} </span></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% if tracks %}
+<div class="prova" style="width: 400px; justify-content: center;">
+    <center><br><h4>Songs that you may like:</h4></center>
+    <ul>
+        {% for track in tracks%}
+        <li style="margin-bottom: 5px;"><span>{{ track['name'] }} - {{ track['artists'][0]['name'] }} </span></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+</div>
+
+
+
+<script>
+
+    function cambiaTesto() {
+        var paragrafo = document.getElementById("artista-canzone-preferito");
+        var label = document.getElementById("label-input-type");
+        var icon = document.getElementById("icon-input-type");
+        var radio1 = document.getElementsByName("inlineRadioOptions")[0];
+        var radio2 = document.getElementsByName("inlineRadioOptions")[1];
+        var input = document.getElementById("song");
+
+        if (inlineRadio1.checked) {
+            paragrafo.innerHTML = "Enter a song you like:";
+            label.innerHTML = "Song";
+            icon.name = "musical-notes-outline";
+            input.name = "song"
+        } else if (inlineRadio2.checked) {
+            paragrafo.innerHTML = "Enter an artist you like:";
+            label.innerHTML = "Artist";
+            icon.name = "people-outline";
+            input.name = "artist"
+        }
+    }
+
+    
+
+
+</script>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "base.html.j2" %}
+{% block title %}Sign Up{% endblock %}
+{% block content %}
+<!--<form method="POST">
+    <h3 align="center">Sign Up</h3>
+    <div class="form-group">
+        <label for="email">Email: </label>
+        <input type="email" class="form-control" name="email" id="email" placeholder="Enter email" required>
+    </div>
+
+    <div class="form-group">
+        <label for="username">Username: </label>
+        <input type="text" class="form-control" name="username" id="username" placeholder="Enter username" required>
+    </div>
+
+    <div class="form-group">
+        <label for="password1">Password: </label>
+        <input type="password" class="form-control" name="password1" id="password1" placeholder="Enter password" required>
+    </div>
+
+    <div class="form-group">
+        <label for="password2">Password (confirm): </label>
+        <input type="password" class="form-control" name="password2" id="password2" placeholder="Confirm password" required>
+    </div>
+    <br>
+
+    <button type="submit" class="btn btn-primary" align="center">Submit</button>
+
+</form>-->
+
+<link rel="stylesheet" href="../static/index.css">
+
+<section>
+        <div class="form-box">
+            <div class="form-value">
+                <form method="POST" autocomplete="off">
+                <br>
+                    <h2>Sign Up</h2>
+                    <div class="inputbox">
+                        <ion-icon name="person-circle-outline"></ion-icon>
+                        <input type="text" name="username" id="username" required >              
+                        <label for="">Username</label>
+                    </div>
+                    <div class="inputbox">
+                        <ion-icon name="mail-outline"></ion-icon>
+                        <input type="email" name="email" id="email" required>              
+                        <label for="">Email</label>
+                    </div>
+                    <div class="inputbox">
+                        <ion-icon name="lock-closed-outline"></ion-icon>                     
+                        <input type="password" name="password1" id="password1" required>      
+                        <label for="">Password</label>                  
+                    </div>
+                    <div class="inputbox">
+                        <ion-icon name="lock-closed-outline"></ion-icon>                        
+                        <input type="password" name="password2" id="password2" required>      
+                        <label for="">Confirm password</label>                  
+                    </div>
+                    <button type="submit" class="button-template">Register</button><br><br>
+                </form>
+            </div>
+        </div>
+    </section>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+{% endblock %}

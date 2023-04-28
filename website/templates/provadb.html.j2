@@ -1,0 +1,10 @@
+{% extends "base.html.j2" %}
+{% block title %}ProvaDB{% endblock %}
+{% block content %}
+{% if user.username == "Caliu" %}
+    {% for single_user in list_user %}
+    <ul><li>{{single_user.id}}</li> <br> <li>{{single_user.email}}</li> <br>
+    <li>{{single_user.password}}</li> <br> <li>{{single_user.username}}</li></ul><br>
+    {% endfor %}
+{% endif %}
+{% endblock %}
