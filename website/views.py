@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_required, current_user
 #from .models import Note
 from . import db
-from .models import User
+from .models import User, Song, Artist, user_artist_rating, user_song_rating, song_artist_association_table
 import itertools
 import json
 import spotipy
@@ -22,19 +22,36 @@ def home():
         artist_input = request.form.get('artist')
         sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(SPOTIPY_CLIENT_ID, SPOTIPY_CLIENT_SECRET))
 
-        if song:
+        if song: # ricerca canzone
             q="track:" + str(song)
             results = sp.search(q, type='track')
             if len(results['tracks']['items']) == 0:
                 flash('The song '+ str(song) +' does not exist', category='error')
             else:
-                track_id = results['tracks']['items'][0]['id']
-                name_track = results['tracks']['items'][0]['name']
+                track_id = str(results['tracks']['items'][0]['id'])
+                name_track = str(results['tracks']['items'][0]['name'])
                 name_artist = results['tracks']['items'][0]['artists'][0]['name']
                 recommendations = sp.recommendations(seed_tracks=[track_id], limit=10)
                 tracks = recommendations['tracks']
+
+                #add the track to the Song Table if it does not exist
+                song_name = Song.query.filter_by(id = track_id).first()
+                if song_name == None:
+                    new_song = Song(id=track_id ,name=name_track)
+                    db.session.add(new_song)
+                    db.session.commit()
+                
+                #check if the user is already associated with the song. If not, add the user and the song (rating will be updated later)
+                user_song_association = db.session.query(user_song_rating).filter_by(user_id=current_user.id, song_id=track_id).first()
+                if user_song_association == None:
+                    new_song_for_user = user_song_rating.insert().values(user_id=current_user.id, song_id=track_id)
+                    db.session.execute(new_song_for_user)
+                    db.session.commit()
+
+                    
+
                 return render_template('home.html.j2', user=current_user, tracks=tracks, name_track = name_track, name_artist = name_artist)
-        else:
+        else: # ricerca artista
             q="artist:" + str(artist_input)
             results = sp.search(q, limit=1, type="artist")
             
@@ -69,7 +86,9 @@ def home():
 @views.route('/provadb', methods=['GET']) #serve per stampare tutti gli utenti
 def provadb():
     users = User.query.all()
-    return render_template("provadb.html.j2", user=current_user, list_user=users)
+    songs = Song.query.all()
+    user_song = db.session.query(user_song_rating)
+    return render_template("provadb.html.j2", user=current_user, list_user=users, songs = songs, user_song = user_song)
 
 @views.route('/songs', methods=['GET'])
 @login_required
