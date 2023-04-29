@@ -71,41 +71,30 @@ def home():
                 else:
                     tracks = top_tracks['tracks']
                     return render_template('home.html.j2', user=current_user, artists=artist, tracks_art = tracks, artist_input = artist_input)
-        
-        
-        #if len(str(note)) < 1:
-        #    flash('Note is too short!', category='error') 
-        #else:
-        #    new_note = Note(data=note, user_id=current_user.id)  #providing the schema for the note 
-        #    db.session.add(new_note) #adding the note to the database 
-        #    db.session.commit()
-        #    flash('Note added!', category='success')
 
     return render_template("home.html.j2", user=current_user)
 
-@views.route('/provadb', methods=['GET']) #serve per stampare tutti gli utenti
+@views.route('/provadb', methods=['GET']) #just for checking the date inside of the DB
 def provadb():
     users = User.query.all()
     songs = Song.query.all()
     user_song = db.session.query(user_song_rating)
     return render_template("provadb.html.j2", user=current_user, list_user=users, songs = songs, user_song = user_song)
 
-@views.route('/songs', methods=['GET'])
+@views.route('/history', methods=['GET', 'POST'])
 @login_required
-def songs(): # prendere le canzoni/artisti di ogni utente e il rispettivo voto
-    return render_template("")
+def history(): # prendere le canzoni/artisti di ogni utente e il rispettivo voto
+    ratings = db.session.query(user_song_rating.c.rating, Song.name, Song.id).join(Song).filter(user_song_rating.c.user_id == current_user.id).order_by(Song.name.asc()).all()
+    if request.method == 'POST':
+        for rating in ratings:
+            new_rating = request.form.get(rating.id)
+            user_song_association = db.session.query(user_song_rating).filter_by(user_id=current_user.id, song_id=rating.id).first()
+            if user_song_association.rating != new_rating:
+                db.session.query(user_song_rating).filter_by(user_id=current_user.id, song_id=rating.id).update({"rating": new_rating})
+                db.session.commit()
+            ratings = db.session.query(user_song_rating.c.rating, Song.name, Song.id).join(Song).filter(user_song_rating.c.user_id == current_user.id).order_by(Song.name.asc()).all()
 
-# @views.route('/ricevi-dati', methods=['POST'])
-# def ricevi_dati():  
-    """
-    note = json.loads(request.data) # this function expects a JSON from the INDEX.js file 
-    noteId = note['noteId']
-    note = Note.query.get(noteId)
-    if note:
-        if note.user_id == current_user.id:
-            db.session.delete(note)
-            db.session.commit()
-    
-    """
+    return render_template("history.html.j2", user=current_user, ratings=ratings)    
+
 
     

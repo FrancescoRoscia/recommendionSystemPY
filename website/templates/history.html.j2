@@ -1,0 +1,33 @@
+{% extends "base.html.j2" %}
+{% block title %}History{% endblock %}
+{% block content %}
+
+
+
+<form method="POST">
+    <ul>
+        {% for rating in ratings %}
+        <li><span>{{rating.name}}</span> <select name={{rating.id}}>
+
+            {% if None != rating.rating %}
+            <option value="None">None</option>
+            {% else %}
+            <option value="None" selected>None</option>
+            {% endif %}
+
+            {% for x in range(1,6) %}
+                {% if x != rating.rating %}
+                <option value={{x}}>{{x}}</option>
+                {% else %}
+                <option value={{x}} selected>{{x}}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        </li>
+        {% endfor %}
+    </ul>
+    <input type="submit" value="Save">
+</form>
+
+
+{% endblock %}
