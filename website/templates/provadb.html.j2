@@ -1,9 +1,57 @@
 {% extends "base.html.j2" %}
 {% block title %}ProvaDB{% endblock %}
+{% block style %}
+<style>
+    @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);
+
+    .container{
+        display: grid;
+        justify-content: center;
+    }
+
+    *, *:before, *:after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
+
+    body {
+    background: #374A67;
+    font-family: 'Open Sans', sans-serif;
+    }
+
+    table {
+    background: #616283;
+    border-radius: 0.25em;
+    border-collapse: collapse;
+    margin: 1em;
+    -webkit-box-shadow: 16px 16px 20px -2px rgba(46,40,54,1);
+    -moz-box-shadow: 16px 16px 20px -2px rgba(46,40,54,1);
+    box-shadow: 16px 16px 20px -2px rgba(46,40,54,1);
+    }
+
+
+    th {
+    border-bottom: 1px solid #364043;
+    color: #E2B842;
+    font-size: 0.85em;
+    font-weight: 600;
+    padding: 0.5em 1em;
+    text-align: left;
+    }
+    td {
+    color: #fff;
+    font-weight: 400;
+    padding: 0.65em 1em;
+    }
+</style>
+
+{% endblock %}
 {% block content %}
 {% if user.username == "Caliu" %}
     <br>
-    <table border="1px">
+    <table>
+    <center><h4>Users</h4></center>
     <th>ID</th><th>Email</th><th>Username</th>
     {% for single_user in list_user %}
     <tr><td>{{single_user.id}}</td><td>{{single_user.email}}</td><td>{{single_user.username}}</td></tr>
@@ -12,7 +60,8 @@
 
     <br><br>
 
-    <table border="1px">
+    <table>
+    <center><h4>Songs</h4></center>
     <th>ID</th><th>Name</th>
     {% for song in songs %}
     <tr><td>{{song.id}}</td><td>{{song.name}}</td></tr>
@@ -21,7 +70,8 @@
 
     <br><br>
 
-    <table border="1px">
+    <table>
+    <center><h4>Users - Songs</h4></center>
     <th>ID_Utente</th><th>ID_Song</th><th>Rating</th>
     {% for user_rate_song in user_song %}
     <tr><td>{{user_rate_song.user_id}}</td><td>{{user_rate_song.song_id}}</td><td>{{user_rate_song.rating}}</td></tr>

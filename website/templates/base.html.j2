@@ -18,6 +18,7 @@
     />
     
     <title>{% block title %}{% endblock %} - MusicMate</title>
+    {% block style %}{% endblock %}
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
 
@@ -30,6 +31,11 @@
         font-size: 1.2em;
         top: 33.5%;
       }
+
+      .navbar-collapse{
+        flex-direction: column;
+      }
+
     </style>
 </head>
 <body>

@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_required, current_user
-#from .models import Note
 from . import db
 from .models import User, Song, Artist, user_artist_rating, user_song_rating, song_artist_association_table
 import itertools
@@ -94,7 +93,7 @@ def history(): # prendere le canzoni/artisti di ogni utente e il rispettivo voto
                 db.session.commit()
             ratings = db.session.query(user_song_rating.c.rating, Song.name, Song.id).join(Song).filter(user_song_rating.c.user_id == current_user.id).order_by(Song.name.asc()).all()
 
-    return render_template("history.html.j2", user=current_user, ratings=ratings)    
+    return render_template("history.html.j2", user=current_user, ratings=ratings)
 
 
     
