@@ -16,7 +16,7 @@
     }
 
     body {
-    background: #374A67;
+    background: #D8E2DC;
     font-family: 'Open Sans', sans-serif;
     }
 
@@ -71,10 +71,40 @@
     <br><br>
 
     <table>
+    <center><h4>Artist</h4></center>
+    <th>ID</th><th>Name</th><th>Genre</th>
+    {% for artist in artists %}
+    <tr><td>{{artist.id}}</td><td>{{artist.name}}</td><td>{{artist.genre}}</td></tr>
+    {% endfor %}
+    </table>
+
+    <br><br>
+
+    <table>
     <center><h4>Users - Songs</h4></center>
     <th>ID_Utente</th><th>ID_Song</th><th>Rating</th>
     {% for user_rate_song in user_song %}
     <tr><td>{{user_rate_song.user_id}}</td><td>{{user_rate_song.song_id}}</td><td>{{user_rate_song.rating}}</td></tr>
+    {% endfor %}
+    </table>
+
+    <br><br>
+
+    <table>
+    <center><h4>Users - Artist</h4></center>
+    <th>ID_Utente</th><th>ID_Song</th><th>Rating</th>
+    {% for user_rate_artist in user_artist %}
+    <tr><td>{{user_rate_artist.user_id}}</td><td>{{user_rate_artist.artist_id}}</td><td>{{user_rate_artist.rating}}</td></tr>
+    {% endfor %}
+    </table>
+
+    <br><br>
+
+    <table>
+    <center><h4>Artist - Song</h4></center>
+    <th>ID_Artist</th><th>ID_Song</th><th>Rating</th>
+    {% for artist_song in artist_songs %}
+    <tr><td>{{artist_song.artist_id}}</td><td>{{artist_song.song_id}}</td></tr>
     {% endfor %}
     </table>
 
