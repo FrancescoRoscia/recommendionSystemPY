@@ -1,6 +1,8 @@
 {% extends "base.html.j2" %}
 {% block title %}History{% endblock %}
 {% block content %}
+<script src="../static/index.js"></script>
+
 <style>
     body {
     background-color: #f2f2f2;
@@ -10,7 +12,6 @@
     color: #333;
     }
 
-    /* Stili per la lista delle canzoni */
     ul {
         list-style:disc inside;
         padding: 0;
@@ -21,8 +22,6 @@
     }
 
     
-
-    /* Stili per il menu a tendina dei voti */
     select {
     padding: 5px;
     font-size: 16px;
@@ -30,7 +29,6 @@
     border: 1px solid #ccc;
     }
 
-    /* Stili per il pulsante di invio */
     input[type="submit"] {
     padding: 10px 20px;
     font-size: 16px;
@@ -45,15 +43,19 @@
     background-color: #45a049;
     }
 
+    #buttonSave{
+        display: none;
+    }
+
 </style>
 
 
 
 <form method="POST">
     <ul>
-        <h1>Canzoni</h1>
+        <h1>Songs</h1>
         {% for rating in ratings %}
-        <li><span>{{rating.name}}</span> <select name={{rating.id}}>
+        <li><span>{{rating.name}}</span> <select name={{rating.id}} onchange="clickButton()">
 
             {% if None != rating.rating %}
             <option value="None">None</option>
@@ -73,9 +75,9 @@
         {% endfor %}
 
         <!-- ARTISTS -->
-        <h1>Artisti</h1>
+        <h1>Artists</h1>
         {% for rating_artist in ratings_artist %}
-        <li><span>{{rating_artist.name}}</span> <select name={{rating_artist.id}}>
+        <li><span>{{rating_artist.name}}</span> <select name={{rating_artist.id}} onchange="clickButton()">
 
             {% if None != rating_artist.rating %}
             <option value="None">None</option>
@@ -94,7 +96,7 @@
         </li>
         {% endfor %}
     </ul>
-    <center><input type="submit" value="Save"></center>
+    <center><input type="submit" id="buttonSave" value="Save"></center>
 </form>
 
 

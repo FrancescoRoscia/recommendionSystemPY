@@ -128,7 +128,7 @@ def provadb():
 
 @views.route('/history', methods=['GET', 'POST'])
 @login_required
-def history(): # prendere le canzoni/artisti di ogni utente e il rispettivo voto
+def history(): 
     ratings_artist = db.session.query(user_artist_rating.c.rating, Artist.name, Artist.id).join(Artist).filter(user_artist_rating.c.user_id == current_user.id).order_by(Artist.name.asc()).all()
     ratings = db.session.query(user_song_rating.c.rating, Song.name, Song.id).join(Song).filter(user_song_rating.c.user_id == current_user.id).order_by(Song.name.asc()).all()
     
