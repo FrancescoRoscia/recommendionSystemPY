@@ -38,6 +38,12 @@
         flex-direction: column;
       }
 
+      .nav-item, .nav-link{
+        color: rgb(255 255 255 / 85%) !important;
+      }
+
+      
+
     </style>
 </head>
 <body>
@@ -57,7 +63,7 @@
                     <a class="nav-item nav-link" id="db" href="/provadb">DB</a>
                     {% endif %}
                 <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
-                <span class="nav-item nav-link" id="username-display-item" href="">{{ user.username }}</span>
+                <a class="nav-item nav-link" id="profile" href="/profile"> {{ user.username }}</a>
                 <ion-icon name="person-circle-outline" id="username-display-icon"></ion-icon>
                 {% else %}
                 <a class="nav-item nav-link" id="login" href="/login">Login</a>

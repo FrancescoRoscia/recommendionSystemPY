@@ -1,0 +1,117 @@
+{% extends "base.html.j2" %}
+{% block title %}{{user.username}}'s Profile {% endblock %}
+
+{% block style %}
+    <style>
+        body {
+            background-color: #f2f2f2;
+        }
+
+        #h3Delete{
+            color: red;
+        }
+
+        #h3Username{
+            color: #1083FF;
+        }
+
+        .inputbox{
+            position: relative;
+            margin: 30px 0;
+            width: 310px;
+            border-bottom: 2px solid #444;
+        }
+
+        .inputbox label{
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            transform: translateY(-50%);
+            color: #000;
+            font-size: 1em;
+            pointer-events: none;
+            transition: .5s;
+        }
+
+        input:focus ~ label,
+        input:valid ~ label{
+            top: -5px;
+        }
+
+        .inputbox input {
+            width: 100%;
+            height: 50px;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 1em;
+            padding:0 35px 0 5px;
+            color: #000;
+        }
+
+        .inputbox ion-icon{
+            position: absolute;
+            right: 8px;
+            color: #000;
+            font-size: 1.2em;
+            top: 20px;
+        }
+        
+
+    </style>
+    
+{% endblock %}
+
+
+{% block content %}
+<!-- Cambio di Username -->
+<br>
+<form method="POST" style="border: 1px solid #1083FF;border-radius: 8px;">
+    <center><br>
+    <h3 id="h3Username">Change username</h3>
+    <p>Your current username is: <b style="color: #1083FF;">{{user.username}}</b></p>
+        <div class="inputbox">
+            <ion-icon name="person-circle-outline"></ion-icon>
+            <input type="text" name="username" id="username" onkeyup="checkUsername()" required>              
+            <label for="username">New Username</label>
+        </div>
+    <input type="submit" id="btnChangeUsername" name="form-username" class="btn btn-outline-primary" value="Change Username" disabled>
+    </center><br>
+</form>
+
+<!-- Cambio di Password -->
+<br>
+<form method="POST" style="border: 1px solid black;border-radius: 8px;">
+    <center><br>
+    <h3>Change Password</h3>
+    <p>In order to change your password, insert your previous password and the new one.</p>
+        <div class="inputbox">
+            <ion-icon name="lock-closed-outline"></ion-icon>                        
+            <input type="password" name="oldPassword" id="oldPassword" onkeyup="checkPassword()" required autocomplete="off">      
+            <label for="oldPassword">Previous Password</label>                  
+        </div>
+        <div class="inputbox">
+            <ion-icon name="lock-closed-outline"></ion-icon>                        
+            <input type="password" name="newPassword" id="newPassword" onkeyup="checkPassword()" required autocomplete="off">      
+            <label for="newPassword">New Password</label>                  
+        </div>
+    <br>
+    <input type="submit" id="btnChangePass" name="form-password" class="btn btn-outline-dark" value="Change Password" disabled>
+    </center><br>
+</form>
+
+<!-- Elimina Account -->
+<br>
+<form method="POST" style="border: 1px solid red;border-radius: 8px;">
+    <center><br>
+    <h3 id="h3Delete">Delete account</h3>
+    <p>Once you delete your account, there is no going back. Please be certain.</p>
+    <input type="checkbox" name="checkSure" id="checkSure" onclick="btnSureDelete()"> <span>I am sure</span> <br><br>
+    <input type="submit" id="btnDelete" name="form-delete" class="btn btn-outline-danger" value="Delete Account" disabled>
+    </center><br>
+</form>
+<br><br>
+<script src="../static/index.js"></script>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+{% endblock %}

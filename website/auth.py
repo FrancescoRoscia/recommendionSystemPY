@@ -3,6 +3,7 @@ from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_required, login_user, logout_user, current_user 
+from sqlalchemy import func
 
 auth = Blueprint('auth', __name__) # we are defining a Blueprint
 
@@ -43,7 +44,7 @@ def signup():
         password2 = request.form.get('password2')
 
         user = User.query.filter_by(email = email).first()
-        usern = User.query.filter_by(username = username).first()
+        usern = User.query.filter(func.lower(User.username) == func.lower(username)).first()
 
         if user:
             flash('Email already exists', category='error')

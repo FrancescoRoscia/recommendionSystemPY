@@ -1,13 +1,15 @@
-from flask import Blueprint, render_template, request, flash, jsonify
-from flask_login import login_required, current_user
+from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
+from flask_login import login_required, current_user, logout_user
 from . import db
 from .models import User, Song, Artist, user_artist_rating, user_song_rating, song_artist_association_table
 import itertools
+from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy import func
 import json
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-SPOTIPY_CLIENT_ID = "342f3c7ab58c4d66bedf8d8c9fef5197"
-SPOTIPY_CLIENT_SECRET = "27265d2f28694831b8ef070f131dfc2f"
+SPOTIPY_CLIENT_ID = "INSERT_ID"
+SPOTIPY_CLIENT_SECRET = "INSERT_SECRET"
 
 
 views = Blueprint('views', __name__)
@@ -154,4 +156,53 @@ def history():
     return render_template("history.html.j2", user=current_user, ratings=ratings, ratings_artist = ratings_artist)
 
 
-    
+@views.route('/profile', methods=['GET', 'POST']) #just for checking the date inside of the DB
+def profile():
+    if request.method == 'POST':
+        if "form-delete" in request.form:
+            user = User.query.get(current_user.id)
+            user_song_association = user_song_rating.delete().where(user_song_rating.c.user_id == current_user.id)
+            user_artist_association = user_artist_rating.delete().where(user_artist_rating.c.user_id == current_user.id)
+            
+            if user:
+                # Elimina l'utente dal database
+                db.session.delete(user)
+                db.session.commit()
+                db.session.execute(user_song_association)
+                db.session.execute(user_artist_association)
+                db.session.commit()
+                print("Account eliminato con successo.")
+                logout_user()
+                return redirect(url_for('auth.login'))
+        
+        elif "form-password" in request.form:
+            oldPass = request.form.get('oldPassword')
+            newPass = request.form.get('newPassword')
+
+            user = User.query.filter_by(id = current_user.id).first()
+
+            if user:
+                if check_password_hash(user.password, str(oldPass)):
+                    new_password_cryp = generate_password_hash(str(newPass), method='sha256')
+                    user.password = new_password_cryp
+                    db.session.commit()
+                    flash('Password Changed!', category='success')
+                else:
+                    flash('Your previous password is incorrect!', category='error')
+        
+        elif "form-username" in request.form:
+            new_username = request.form.get('username')
+
+            user = User.query.filter_by(id = current_user.id).first()
+
+            if user:
+                usern = User.query.filter(User.id != current_user.id, func.lower(User.username) == func.lower(new_username)).first()
+                if usern:
+                    flash('Username already exists', category='error')
+                else:
+                    user.username = new_username
+                    db.session.commit()
+                    flash('Username Changed!', category='success')
+            
+
+    return render_template("profile.html.j2", user=current_user)
