@@ -23,6 +23,12 @@ song_artist_association_table = db.Table(
     db.Column('artist_id', db.String(150), db.ForeignKey('artist.id'), primary_key=True)
 )
 
+friend = db.Table(
+    'friend',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('user_id2', db.Integer, db.ForeignKey('user.id'), primary_key=True)
+)
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True)
